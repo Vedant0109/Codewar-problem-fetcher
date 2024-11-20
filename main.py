@@ -23,8 +23,9 @@ def easy_question():
     time.sleep(5)
 
     description = driver.find_element(By.ID, "description").text
-    return description
     driver.quit()
+    return description
+    
 
 
 

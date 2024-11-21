@@ -1,7 +1,8 @@
+
 from discord.ext import commands
 import discord
 import settings
-from scrape.py import easy_question
+from scrape import easy_question
 
 def run():
     intents = discord.Intents.default()
@@ -13,8 +14,8 @@ def run():
         print(f"Logged in as: {bot.user} (ID: {bot.user.id})")
 
     @bot.command()
-    async def ping(ctx):
-        await ctx.send()
+    async def question(ctx):
+        await ctx.send(easy_question())
 
     bot.run(settings.Discord_API_Secret, root_logger=True)
 

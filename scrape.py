@@ -25,12 +25,3 @@ def easy_question():
     description = driver.find_element(By.ID, "description").text
     driver.quit()
     return description
-
-
-
-def send(question, url):
-    json = {
-        "content": f"Question: {question} \n URL: {url}"
-    }
-    response = requests.post(webhook_url, json=json)
-

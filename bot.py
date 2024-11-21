@@ -30,7 +30,7 @@ async def main():
     intents = Intents.all()
     bot = Bot(command_prefix='!', intents=intents)
 
-    await bot.start(settings.Discord_API_Secret, root_logger=True)
+    await bot.start(settings.Discord_API_Secret)
 
 if __name__ == "__main__":
     asyncio.run(main())

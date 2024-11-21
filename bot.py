@@ -1,23 +1,36 @@
 
+from scraper import easy_question
+from discord import Intents
 from discord.ext import commands
-import discord
+from discord.ext import tasks
+
+from selenium import webdriver
+
 import settings
-from scrape import easy_question
+import asyncio
 
-def run():
-    intents = discord.Intents.default()
-    intents.message_content = True
-    bot = commands.Bot(command_prefix='!', intents=intents)
+class Bot(commands.Bot):
 
-    @bot.event
-    async def on_ready():
-        print(f"Logged in as: {bot.user} (ID: {bot.user.id})")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.driver = webdriver.Chrome()
 
-    @bot.command()
-    async def question(ctx):
-        await ctx.send(easy_question())
+    async def setup_hook(self):
+        await self.scrape.start()
+    
+    @tasks.loop(hours=1)
+    async def scrape(self):
+        easy_question(self.driver)
 
-    bot.run(settings.Discord_API_Secret, root_logger=True)
+    @scrape.before_loop
+    async def before_loop(self):
+        await self.wait_until_ready()
+
+async def main():
+    intents = Intents.all()
+    bot = Bot(command_prefix='!', intents=intents)
+
+    await bot.start(settings.Discord_API_Secret, root_logger=True)
 
 if __name__ == "__main__":
-    run()
+    asyncio.run(main())

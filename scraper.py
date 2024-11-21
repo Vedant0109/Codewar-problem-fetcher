@@ -6,10 +6,8 @@ import random
 import requests
 import time
 
-def easy_question():
+def easy_question(driver):
     
-    driver = webdriver.Chrome()
-
     driver.get("https://www.codewars.com/kata/search/python?q=&tags=Debugging&beta=false&order_by=sort_date%20desc")
     time.sleep(5)
 
